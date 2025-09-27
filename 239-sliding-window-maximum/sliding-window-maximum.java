@@ -1,29 +1,26 @@
+class Pair{
+    int val,ind;
+    Pair(int val,int ind){
+        this.val = val;
+        this.ind = ind;
+    }
+}
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
-        Stack<Integer> val = new Stack<>();
         int n = nums.length;
-        int mrr[] = new int[n-k+1];
-        int nge[] = new int[n];
-        val.push(n-1);
-        nge[n-1] = n;
-        for(int i = n-2;i>=0;i--){
-            while(val.size() >0 && nums[val.peek()]<nums[i]) val.pop();
-            if(val.size() == 0) nge[i] = n;
-            else nge[i] = val.peek();
-            val.push(i);
-        }
-        int j = 0;
-        for(int i = 0;i<n-k+1;i++){
-            if(j>=i+k) j = i;
-            int m = nums[j];
-            while(j<k+i){
-                m = nums[j];
-                j = nge[j];
+        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x,y)->y.val - x.val);
+        int ans[] = new int[n-k+1];
+        int j=0;
+        for(int i=0;i<n;i++){
+            
+            while(!pq.isEmpty() && i-k>=pq.peek().ind){
+                pq.poll();
             }
-            mrr[i] = m;
+            pq.add(new Pair(nums[i],i));
+            if(i>=k-1){
+                ans[j++] = pq.peek().val;
+            }
         }
-        return mrr;
-
-
+        return ans;
     }
 }
