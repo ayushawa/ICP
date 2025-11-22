@@ -11,7 +11,6 @@ class Solution {
            else skipSum = Math.max(temp,skipSum+arr[i]);
            ans = Math.max(ans,Math.max(skipSum,noSkipSum));
 
-           System.out.println(skipSum + " "+ noSkipSum +" "+ans);
        }
        return ans;
     }
