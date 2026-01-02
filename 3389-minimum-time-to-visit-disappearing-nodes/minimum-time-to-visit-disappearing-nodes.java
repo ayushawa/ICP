@@ -8,8 +8,8 @@ class Touple{
 }
 class Pair{
     int node;
-    long t;
-    Pair(int node,long t){
+    int t;
+    Pair(int node,int t){
         this.node = node;
         this.t = t;
     }
@@ -24,23 +24,23 @@ class Solution {
             adj.get(edges[i][0]).add(new Touple(edges[i][1],edges[i][2],disappear[edges[i][1]]));
             adj.get(edges[i][1]).add(new Touple(edges[i][0],edges[i][2],disappear[edges[i][0]]));
         }
-        long times[] = new long[n];
-        Arrays.fill(times,Long.MAX_VALUE);
+        int times[] = new int[n];
+        Arrays.fill(times,Integer.MAX_VALUE);
         
-        PriorityQueue<Pair> q =new PriorityQueue<>((a,b)->Long.compare(a.t,b.t));
-        q.add(new Pair(0,(long)0));
+        PriorityQueue<Pair> q =new PriorityQueue<>((a,b)->a.t-b.t);
+        q.add(new Pair(0,0));
         times[0] = 0;
         while(!q.isEmpty()){
             Pair  p = q.poll();
             int node = p.node;
-            long t= p.t;
+            int t= p.t;
             if (t > times[node]) continue;
             for(Touple top: adj.get(node)){
                 int node2 = top.node;
                 int time = top.time;
                 int lostTime = top.lost;
 
-                long totaltime = time + t;
+                int totaltime = time + t;
                 if(times[node2]>totaltime && totaltime<lostTime){
                     times[node2] = totaltime;
                     q.add(new Pair(node2,totaltime));
@@ -48,12 +48,11 @@ class Solution {
             }
         }
 
-        int ans[] = new int[n];
-
+   
         for(int i=0;i<n;i++){
-            if(times[i] == Long.MAX_VALUE) ans[i] = -1;
-            else ans[i] = (int)times[i];
+            if(times[i] == Integer.MAX_VALUE) times[i] = -1;
+           
         }
-        return ans;
+        return times;
     }
 }
