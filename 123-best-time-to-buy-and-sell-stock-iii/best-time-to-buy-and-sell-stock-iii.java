@@ -1,19 +1,22 @@
 class Solution {
-    public int maxProfit(int[] arr) {
-        int n = arr.length;
-        int prev[] = new int[5];
-        int curr[] = new int[5];
+ public int maxProfit(int[] prices) {
+        int n= prices.length;
+        int prev[][] = new int[3][2];
+
         for(int i=n-1;i>=0;i--){
-            for(int trans = 3;trans>=0;trans--){
-                if(trans%2 == 0){
-                    // buy 
-                    curr[trans] = Math.max(-arr[i] + prev[trans+1],prev[trans]);
+            int curr[][] = new int[3][2];
+            for(int k=1;k<=2;k++){
+                for(int buy = 1;buy>=0;buy--){
+                    if(buy == 0){
+                        curr[k][buy] =Math.max(-prices[i] + prev[k][1],prev[k][0]);
+                    }
+                    else {
+                        curr[k][buy] = Math.max(prices[i]+prev[k-1][0],prev[k][1]);
+                    }
                 }
-                else curr[trans] = Math.max(arr[i]+ prev[trans + 1],prev[trans]);
             }
             prev = curr;
         }
-
-        return prev[0];
+        return prev[2][0];
     }
 }
