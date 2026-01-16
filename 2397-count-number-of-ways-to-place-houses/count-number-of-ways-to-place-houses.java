@@ -1,14 +1,15 @@
 class Solution {
     public int countHousePlacements(int n) {
-        int a = 1;
-        int b = 1;
-        int c = 2;
-        int mod = (int)1e9 + 7;
-        for (int i = 0; i < n; ++i) {
-            c = (a + b) % mod;
-            a = b;
-            b = c;
+        long first = 1;
+        long second = 1;
+
+        long mod = (long)1e9 + 7;
+        for(int i = 1;i<=n;i++){
+            long temp = (first + second)%mod;
+            first = second;
+            second = temp;
         }
-        return (int)(1L * b * b % mod);
+        return (int)((second * second)%mod) ;
+        
     }
 }
