@@ -2,35 +2,31 @@ class Solution {
     public int[] resultsArray(int[] nums, int k) {
         int n = nums.length;
         int ans[] = new int[n-k+1];
-        List<Integer> l =new ArrayList<>();
+       List<Integer> map = new ArrayList<>();
+        int idx = 0;
+        int j=0;
         for(int i=0;i<k;i++){
-            if(l.size() == 0) l.add(nums[i]);
-            else if(l.get(l.size()-1)==nums[i]-1){
-                l.add(nums[i]);
+            if(map.isEmpty()) map.add(nums[i]);
+            else if(nums[i-1]+1==nums[i]){
+                map.add(nums[i]);
             }
             else {
-                 l.clear();
-                 l.add(nums[i]);
+                map.clear();
+                map.add(nums[i]);
             }
-
         }
-        if(l.size() == k) ans[0] = l.get(l.size()-1);
-        else ans[0] = -1;
-        int ind = 1;
+        ans[idx++] = map.size() ==k? nums[k-1]: -1;
         for(int i=k;i<n;i++){
-            if(l.size()!= 0 && l.size() == k) l.remove(0);
-            
-            if(l.size()==0) l.add(nums[i]);
-            else if(l.get(l.size()-1)+1 == nums[i]) l.add(nums[i]);
-            else {
-                l.clear();
-                l.add(nums[i]);
+            if(map.size()==k) map.remove(0);
+            if(nums[i-1]+1==nums[i]){
+                 map.add(nums[i]);
             }
-            
-
-            if(l.size()==k) ans[ind++] = l.get(l.size()-1);
-            else ans[ind++] = -1;
+            else {
+                map.clear();
+                 map.add(nums[i]);
+            }
+            ans[idx++] = map.size() ==k? nums[i]: -1;
         }
-        return ans;
+       return ans;
     }
 }
