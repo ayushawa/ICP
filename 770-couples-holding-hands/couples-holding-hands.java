@@ -1,30 +1,28 @@
 class Solution {
-    public int minSwapsCouples(int[] row) {
-        int n = row.length;
-        int index[] = new int[n];
+    public int minSwapsCouples(int[] nums) {
+        int n= nums.length;
+        int position[] = new int[n];
         for(int i=0;i<n;i++){
-            index[row[i]]  = i;
+            position[nums[i]] = i;
         }
-
+       
         int count =0;
         for(int i=0;i<n;i+=2){
-            int partner1 = row[i];
-            int partner2;
+            int partner1 = nums[i];
+            int partner2 ;
             if(partner1%2 == 0){
                 partner2 = partner1 + 1;
             }
             else partner2 = partner1-1;
 
-            int neigh = row[i+1];
-            if(neigh != partner2){
-                int idx = index[partner2];
+            int neigh = nums[i+1];
+            if(partner2 != neigh){
+                int idx = position[partner2];
+                nums[i+1] = partner2;
+                nums[idx] = neigh;
 
-                row[i+1] = partner2;
-                row[idx] = neigh;
-
-                index[partner2] = i+1;
-                index[neigh] = idx;
-
+                position[partner2] = i+1;
+                position[neigh] = idx; 
                 count++;
             }
         }
