@@ -9,30 +9,28 @@
  * }
  */
 class Solution {
-    public ListNode reverse(ListNode node){
-        if(node == null || node.next == null) return node;
-        ListNode res = reverse(node.next);
-        node.next.next = node;
-        node.next = null;
+    public ListNode reverse(ListNode head){
+        if(head == null || head.next == null) return head;
+        ListNode res = reverse(head.next);
+        head.next.next = head;
+        head.next = null;
         return res;
     }
     public ListNode doubleIt(ListNode head) {
+        if(head == null) return null;
         head = reverse(head);
-        ListNode head2 = new ListNode(-1);
-        ListNode temp = head;
-        ListNode temp2  = head2;
         int carry = 0;
+        ListNode temp = head;
         while(temp != null){
-            int value = temp.val * 2 + carry ;
-            temp2.next = new ListNode(value%10);
-            temp2 = temp2.next;
-            carry = value/10;
+            int val = temp.val * 2 + carry;
+            temp.val = val%10;
+            carry = val/10;
+            if(temp.next == null && carry >0){
+                temp.next = new ListNode(carry);
+                break;
+            }
             temp = temp.next;
         }
-        if(carry >0) {
-            temp2.next = new ListNode(carry);
-            
-        }
-        return reverse(head2.next);
+        return reverse(head);
     }
 }
