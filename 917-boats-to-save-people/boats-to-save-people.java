@@ -1,39 +1,40 @@
 class Solution {
-    public int helper(int arr[],int limit){
-         int ans= 1;
-        int sum =arr[0];
-        int count = 1;
-        for(int i=1;i<arr.length;i++){
-            sum += arr[i];
-            count++;
-            if(sum >limit || count>2){
-                count = 1;
-                sum = arr[i];
-                ans++;
+    public boolean canPlace(int people[],int m,int limit){
+        int vote = 0;
+        int sum = 0;
+        int i = 0;
+        int n = people.length;
+        int j = n-1;
+        while(i<=j){
+            if(i != j && people[i]+people[j]<=limit){
+                vote++;
+                i++;
+                j--;
+            }
+            else {
+                vote++;
+                j--;
             }
         }
-        return ans;
+        return vote<= m;
     }
-    public int numRescueBoats(int[] arr, int limit) {
-       int count = 0;
-       int s = 0;
-       int e = arr.length-1;
-       Arrays.sort(arr);
-       while(s<=e){
-          if(s == e){
-            count++;
-            s++;
-            e--;
-          }
-          else  if(arr[s]+arr[e]<=limit){
-            count++;
-            s++;
-            e--;
-          }else{
-            e--;
-            count++;
-          }
-       }
-       return count;
+    public int numRescueBoats(int[] people, int limit) {
+        Arrays.sort(people);
+        int  n= people.length;
+        int s = n/2;
+        if(n%2 != 0) s++;
+        int e = n;
+        int mini = n;
+        while(s<=e){
+            int m = s + (e-s)/2;
+            if(canPlace(people,m,limit)) {
+                mini = Math.min(m,mini);
+                e = m-1;
+            }
+            else s = m+1;
+        }
+        return mini;
+
     }
+
 }
