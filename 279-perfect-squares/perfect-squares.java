@@ -7,22 +7,24 @@ class Solution {
             num++;
         }
         int m = l.size();
-        int dp[][] = new int[m][n+1];
+        int prev[] = new int[n+1];
          for(int i=0;i<=n;i++){
-            dp[0][i] = i;
+            prev[i] = i;
          }
          for(int i=1;i<m;i++){
+            int curr[] = new int[n+1];
             for(int j=0;j<=n;j++){
                 int take = Integer.MAX_VALUE;
                 if(j>=l.get(i)){
-                    take = dp[i][j-l.get(i)];
+                    take = curr[j-l.get(i)];
                     if(take != Integer.MAX_VALUE) take++;
                 }
-                int nottake = dp[i-1][j];
-                dp[i][j] = Math.min(take,nottake);
+                int nottake = prev[j];
+                curr[j] = Math.min(take,nottake);
             }
+            prev = curr;
          }
-         return dp[m-1][n];
+         return prev[n];
 
     }
 }
