@@ -12,9 +12,18 @@ class Solution {
         int n = s.length();
         int m = t.length();
         int dp[][] = new int[n+1][m+1];
-        for(int i=0;i<=n;i++){
-            Arrays.fill(dp[i],-1);
+        for(int i = 0;i<=n;i++){
+            dp[i][0] = 1;
         }
-        return helper(s,n,t,m,dp);   
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                int take = 0;
+                if(s.charAt(i-1) == t.charAt(j-1)) take = dp[i-1][j-1];
+                int nottake = dp[i-1][j];
+                dp[i][j] = take + nottake;
+            }
+        }
+        
+        return dp[n][m];   
     }
 }
