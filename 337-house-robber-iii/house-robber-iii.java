@@ -22,8 +22,9 @@ class Solution {
          if(root.left != null) takeLeft = helper(root.left.left,map)+helper(root.left.right,map);
          int takeright = 0;
          if(root.right !=null) takeright = helper(root.right.left,map) + helper(root.right.right,map);
-         map.put(root,Math.max(root.val+ takeLeft+takeright, helper(root.left,map)+helper(root.right,map)));
-         return Math.max(root.val  + takeLeft+takeright, helper(root.left,map)+helper(root.right,map));
+         int ans =  Math.max(root.val  + takeLeft+takeright, helper(root.left,map)+helper(root.right,map));
+         map.put(root,ans);
+         return ans;
 
     }
     public int rob(TreeNode root) {
