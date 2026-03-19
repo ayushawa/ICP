@@ -1,49 +1,38 @@
 class Solution {
+    public boolean isContain(HashMap<Character,Integer> map2,HashMap<Character,Integer> map1){
+        
+        
+        for(char key : map2.keySet()){
+            if(!map1.containsKey(key)) return false;
+            else if(map1.get(key)<map2.get(key)) return false;
+        }
+        return true;
+    }
     public String minWindow(String s, String t) {
-        if(t.length() > s.length()){
-            return "";
-        }
-        HashMap<Character,Integer> map = new HashMap<>();
-        for(int i = 0;i<t.length();i++){
-            char ch = t.charAt(i);
-            map.put(ch,map.getOrDefault(ch,0)+1);
+        
+        HashMap<Character,Integer> map1 = new HashMap<>();
+        for(int i =0;i<t.length();i++){
+            map1.put(t.charAt(i),map1.getOrDefault(t.charAt(i),0)+1);
         }
 
-        int i=0;
+        HashMap<Character,Integer> map2  = new HashMap<>();
         int j=0;
-        int si = 0;
-        int ei = 0;
-        int size = map.size();
-        int minLen = Integer.MAX_VALUE;
-        while(i<s.length()){
+        int minlen = Integer.MAX_VALUE;
+        int start = -1;
+        for(int i=0;i<s.length();i++){
             char ch = s.charAt(i);
-            if(map.containsKey(ch)){
-                map.put(ch,map.get(ch)-1);
-                if(map.get(ch) == 0){
-                    size--;
+            map2.put(ch,map2.getOrDefault(ch,0)+1);
+            while(isContain(map1,map2)){
+                if(minlen > i-j+1){
+                    start = j;
+                    minlen = i-j+1;
                 }
-            }
-
-            while(size == 0){
-                if(i-j+1<minLen){
-                    minLen = i-j+1;
-                    si = j;
-                    ei = i;
-                }
-                char temp = s.charAt(j);
-                if(map.containsKey(temp)){
-                    map.put(temp,map.get(temp)+1);
-                    if(map.get(temp)==1){
-                        size++;
-                    }
-                }
+                map2.put(s.charAt(j),map2.get(s.charAt(j))-1);
+                if(map2.get(s.charAt(j)) == 0) map2.remove(s.charAt(j));
                 j++;
             }
-
-            i++;
         }
-    
-        if(minLen == Integer.MAX_VALUE) return "";
-        return s.substring(si,ei+1);
+        if(minlen == Integer.MAX_VALUE) return "";
+        return s.substring(start,start+minlen);
     }
 }
