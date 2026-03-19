@@ -1,26 +1,29 @@
 class Solution {
-    public int characterReplacement(String s, int k) {
-        int map[] = new int[26];
-        int j=0;
-        int maxi = 0;
-        int maxifreq = 0;
-        for(int i=0;i<s.length();i++){
-            char ch = s.charAt(i);
-            map[ch-'A']++;
-           maxifreq = Math.max(maxifreq,map[ch-'A']);
-            
-            if(i-j+1-maxifreq>k){
-                 char temp = s.charAt(j);
-               map[temp-'A']--;
-               maxifreq = 0;
-               for(int x:map){
-                maxifreq = Math.max(maxifreq,x);
-               }
-                j++;
-             
-            }
-            maxi = Math.max(maxi,i-j+1);
+    public int findMaxfreq(HashMap<Character,Integer> map){
+        int freq = 0;
+        for(char key : map.keySet()){
+            freq = Math.max(map.get(key),freq);
         }
-        return maxi;
+        return freq;
+    }
+    public int characterReplacement(String s, int k) {
+        HashMap<Character,Integer> map = new HashMap<>();
+        int j=0;
+        int maxlen =0;
+        int maxfreq = 0;
+        for(int i=0;i<s.length();i++){
+            char ch  = s.charAt(i);
+            map.put(ch,map.getOrDefault(ch,0)+1);
+            maxfreq = Math.max(map.get(ch),maxfreq);
+            while(i-j+1 - maxfreq>k){
+                map.put(s.charAt(j),map.get(s.charAt(j))-1);
+                if(map.get(s.charAt(j)) == 0) map.remove(s.charAt(j));
+                j++;
+                maxfreq = findMaxfreq(map);
+            }
+            maxlen = Math.max(maxlen,i-j+1);
+        }
+        return maxlen;
+
     }
 }
