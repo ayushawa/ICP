@@ -13,33 +13,36 @@
  *     }
  * }
  */
-
 class Solution {
-    class Pair{
-        TreeNode node;
-        long i;
-        Pair(TreeNode node,long i){
-            this.node  = node;
-            this.i = i;
-        }
-    }
     public int widthOfBinaryTree(TreeNode root) {
-        Deque<Pair> dq = new ArrayDeque<>();
-        int maxWidth = 0;
-        dq.addFirst(new Pair(root,(long)0));
-        while(!dq.isEmpty()){
-            long startIdx = dq.peekFirst().i;
-            long lastIdx = dq.peekLast().i;
-            maxWidth = Math.max(maxWidth,(int)(lastIdx-startIdx+1));
-            int size = dq.size();
-            for(int j=0;j<size;j++){
-                Pair p = dq.pollFirst();
-                long i = p.i;
-                TreeNode node = p.node;
-                if(node.left!= null) dq.addLast(new Pair(node.left,((long)2*i+1)));
-                if(node.right!=null) dq.addLast(new Pair(node.right,((long)2*i+2)));
+        HashMap<TreeNode,Integer> map = new HashMap<>();
+        map.put(root,0);
+        Queue<TreeNode> q = new LinkedList<>();
+        int ans = 1;
+        q.add(root);
+        while(!q.isEmpty()){
+            ArrayList<TreeNode> l = new ArrayList<>();
+            int size = q.size();
+            int first = 0;
+            int last = 0;
+            for(int i=0;i<size;i++){
+                last = 0;
+                TreeNode node = q.poll();
+                if(i == 0) first = map.get(node);
+                if(i == size-1) last = map.get(node);
+                int val = map.get(node);
+                if(node.left != null){
+                    q.add(node.left);
+                    map.put(node.left,2 * val +1);
+                }
+                if(node.right != null){
+                    q.add(node.right);
+                    map.put(node.right,2 * val + 2);
+                }
             }
+            ans = Math.max(ans,last-first+1);
         }
-        return maxWidth;
+        return ans;
+        
     }
 }
