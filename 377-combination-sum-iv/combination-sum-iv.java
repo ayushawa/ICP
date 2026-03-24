@@ -1,16 +1,15 @@
 class Solution {
-    public int helper(int nums[],int target,int dp[]){
-        if(target == 0) return 1;
-        if(dp[target] != -1) return dp[target];
-        int take = 0;
-        for(int i=0;i<nums.length;i++){
-          if(target >= nums[i])  take += helper(nums,target-nums[i],dp);
-        }
-        return dp[target] = take;
-    }
     public int combinationSum4(int[] nums, int target) {
-        int dp[] = new int[target+1];
-        Arrays.fill(dp,-1);
-       return helper(nums,target,dp);
+        int dp[] = new int[target + 1];
+        dp[0] = 1;
+        for(int tar = 1;tar<=target;tar++){
+            int count =0;
+            for(int i : nums){
+                if(tar>=i) count += dp[tar-i];
+            }
+            dp[tar] = count;
+        }
+        return dp[target];
+    
     }
 }
