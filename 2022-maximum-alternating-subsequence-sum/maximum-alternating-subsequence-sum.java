@@ -2,16 +2,21 @@ class Solution {
     public long maxAlternatingSum(int[] nums) {
         int n = nums.length;
         long prev[] = new long[2];
+        long preveven  = 0;
+        long prevodd = 0;
+
         for(int i = n-1;i>=0;i--){
-            long curr[] = new long[2];
+            long curreven = 0;
+            long currodd = 0;
             for(int even = 0;even<=1;even++){
                 if(even == 1){
-                    curr[even] = Math.max((long)nums[i] + prev[0],prev[1]);
+                    curreven= Math.max(nums[i] + prevodd,preveven);
                 }
-                else curr[even] = Math.max(-(long)nums[i] + prev[1],prev[0]);
+                else currodd = Math.max(-nums[i] + preveven,prevodd);
             }
-            prev = curr;
+            preveven  = curreven;
+            prevodd = currodd;
         }
-        return prev[1];
+        return preveven;
     }
 }
