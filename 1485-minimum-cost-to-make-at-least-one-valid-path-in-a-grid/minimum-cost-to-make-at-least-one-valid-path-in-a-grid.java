@@ -22,10 +22,12 @@ class Solution {
         while(!pq.isEmpty()){
             Pair p = pq.poll();
             int r = p.r,c = p.c,count = p.count;
+            if(r == n-1 && c == m-1) return count;
             if(dist[r][c]< count) continue;
             for(int k = 1;k<=4;k++){
                 int rw = r + rows[k];
                 int cl = c + cols[k];
+                
                 if(rw<0 || cl<0 || rw>=n || cl>=m) continue;
                 if(k == grid[r][c]){
                     if(dist[rw][cl]>count){
